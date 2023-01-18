@@ -6,17 +6,20 @@ import os
 import random
 import re
 import sys
+import pprint
 
 # Complete the minimumSwaps function below.
 def minimumSwaps(arr):
     total_swaps = 0
+    sorted = False
     # Keep track of how far the number is from its ordered spot (positive val)
     # Switch the ones with the highest amount of positions away from their ordered spots
     # Break ties by closeness of the numbers to be switched
 
-    while not sorted:
+    while True:
 
         distance, sorted = calc_distance(arr)
+        if sorted: break
 
         #pick the two indices in the list that correspond to the numbers with the max distances, there are no duplicates
         max1, max2 = get_maximums(arr, distance)
@@ -46,25 +49,17 @@ def get_maximums(arr, distance):
         if abs(distance[i]) > abs(distance[max1]):
             max1 = i
 
+    if max1 == 0:
+        max2 = 1
+
     for j in range(len(arr)):
         if j != max1 and abs(distance[j]) > abs(distance[max2]):
-            max_2 = j
+            max2 = j
 
     return max1, max2
 
-
-def swapCount(arr):
-    #Base Case
-    if len(arr) < 2:
-        return arr, 0
-
-    mid = len(arr)//2
-    left, left_swaps = swapCount(arr[ : mid])
-    right, right_swaps = swapCount(arr[mid : ])
-
-
 if __name__ == '__main__':
-    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    fptr = sys.stdout
 
     n = int(input())
 
